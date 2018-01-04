@@ -21,11 +21,11 @@ namespace HangManServer
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public partial class MainPage : Page
     {
         private Instream server;
-
-        
+        public static string Answer;
+        public static int Level;
 
         public MainPage()
         {
@@ -36,8 +36,44 @@ namespace HangManServer
 
             //Koppel OnDataOntvangen aan de methode die uitgevoerd worden:
             server.OnDataOntvangen += server.Server_OnDataOntvangen;
-            
+
+            Level = 13;
+            string levelDisplay=Convert.ToString(Level);
+            HangmanLevel.Text = levelDisplay;
+
         }
+
+        public void btnStart_Clicked(object sender, RoutedEventArgs e)
+        {
+            
+            Answer = AnswerTextBox.Text;
+            
+            Frame.Navigate(typeof(Game));
+        }
+
+        public void btnUp_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (Level < 13)
+            {
+                Level += 1;
+            }
+           
+            string levelDisplay = Convert.ToString(Level);
+            HangmanLevel.Text = levelDisplay;
+
+        }
+        public void btnDown_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (Level > 0)
+            {
+                Level -= 1;
+            }
+            
+            string levelDisplay = Convert.ToString(Level);
+            HangmanLevel.Text = levelDisplay;
+
+        }
+
     }
 }
 

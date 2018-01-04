@@ -77,8 +77,7 @@ namespace HangManServer
             {
                 Debug.WriteLine("Bericht ontvangen van een Team: " + bericht);
             }
-            var game = new Game();
-            game.Check(bericht);
+            
         }
 
         /// <summary>
