@@ -1,51 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.System;
+﻿using System.Threading.Tasks;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 namespace HangManClient
 {
     public sealed partial class MainPage : Page
     {
-        private HD44780Controller lcd ;
+        private readonly HD44780Controller lcd;
 
         private string lastKey;
 
         private SocketListener socketListener;
-        private SocketClient socketClient;
-
+        private readonly SocketClient socketClient;
 
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
             //Start lcd display
             lcd = new HD44780Controller();
             lcd.Init(20, 5, 16, 17, 4, 27, 22, 26, 19, 13, 6);
-            Task.Delay(5);
+            Task.Delay(5); //Short delay necessary for Init
 
-            //Listen for keyboardInput
+            //Start Listening for keyboardInput
             Window.Current.CoreWindow.CharacterReceived += CoreWindowOnCharacterReceived;
 
-            //Start internetService
+            //Start internet connection
             socketListener = new SocketListener(9000);
             socketClient = new SocketClient("10.0.0.24", 9000);
         }
 
-        public string GetLastKey => lastKey;
+        #region Private Methods
 
         private void CoreWindowOnCharacterReceived(CoreWindow sender, CharacterReceivedEventArgs args)
         {
@@ -58,14 +44,12 @@ namespace HangManClient
 
                 lastKey = null;
             }
+
             else if (args.KeyCode == 8) //[BACKSPACE]
-            {
                 lastKey = null;
-            }
-            else if (char.IsLetter((char)args.KeyCode))
-            {
-                lastKey = ((char)args.KeyCode).ToString();
-            }
+
+            else if (char.IsLetter((char) args.KeyCode))
+                lastKey = ((char) args.KeyCode).ToString();
 
             SetLcdText(lastKey);
         }
@@ -73,7 +57,7 @@ namespace HangManClient
         private async void SetLcdText(string text)
         {
             lcd.ClearDisplay();
-            await Task.Delay(5);
+            await Task.Delay(5); //Short delay necessary for ClearDisplay
 
             if (lastKey != null)
             {
@@ -83,5 +67,7 @@ namespace HangManClient
                 lcd.WriteLine("submit: <enter>");
             }
         }
+
+        #endregion
     }
 }

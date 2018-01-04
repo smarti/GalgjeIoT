@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
@@ -13,8 +8,8 @@ namespace HangManClient
 {
     public class SocketClient
     {
-        private HostName _serverHostName;
-        private string _serverPortNumber;
+        private readonly HostName _serverHostName;
+        private readonly string _serverPortNumber;
 
         private StreamSocket _socket;
 
@@ -25,6 +20,8 @@ namespace HangManClient
 
             ConnectClient();
         }
+
+        #region Private Methods
 
         private async void ConnectClient()
         {
@@ -38,17 +35,17 @@ namespace HangManClient
 
                 Debug.WriteLine("Client connected!");
 
-                //Send Message
-                SendMessage("Hello");
+                //Send test Message
+                SendMessage("ConnectionTest");
             }
             catch (Exception ex)
             {
                 SocketErrorStatus webErrorStatus = SocketError.GetStatus(ex.GetBaseException().HResult);
                 Debug.WriteLine(webErrorStatus.ToString() != "Unknown" ? webErrorStatus.ToString() : ex.Message);
-
-                //TODO: restart connection
             }
         }
+
+        #endregion
 
         public async void SendMessage(string message)
         {

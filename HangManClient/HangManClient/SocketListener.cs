@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
@@ -11,7 +7,7 @@ namespace HangManClient
 {
     public class SocketListener
     {
-        private string _portNumber;
+        private readonly string _portNumber;
 
         public SocketListener(int portNumber)
         {
@@ -19,6 +15,8 @@ namespace HangManClient
 
             StartListener();
         }
+
+        #region Private Methods
 
         private async void StartListener()
         {
@@ -38,12 +36,11 @@ namespace HangManClient
             {
                 SocketErrorStatus webErrorStatus = SocketError.GetStatus(ex.GetBaseException().HResult);
                 Debug.WriteLine(webErrorStatus.ToString() != "Unknown" ? webErrorStatus.ToString() : ex.Message);
-
-                //TODO: restart listener
             }
         }
 
-        private async void StreamSocketListener_ConnectionReceived(StreamSocketListener sender, StreamSocketListenerConnectionReceivedEventArgs args)
+        private async void StreamSocketListener_ConnectionReceived(StreamSocketListener sender,
+            StreamSocketListenerConnectionReceivedEventArgs args)
         {
             using (DataReader dataReader = new DataReader(args.Socket.InputStream))
             {
@@ -63,5 +60,7 @@ namespace HangManClient
                 }
             }
         }
+
+        #endregion
     }
 }
