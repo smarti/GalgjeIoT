@@ -261,7 +261,6 @@ namespace HD44780Library
 			return temp;
 		}
 
-
 		/// <summary>
 		/// RS: 0 / RW: 0 / DB7: 1 / DB6: ADD / DB5: ADD / DB4: ADD / DB3: ADD / DB2: ADD / DB1: ADD / DB0: ADD
 		/// </summary>

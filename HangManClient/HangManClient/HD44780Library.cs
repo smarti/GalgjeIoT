@@ -23,7 +23,7 @@ namespace HangManClient
 		private bool isConfigured = false;
 
 		private bool isDisplayOn = true;
-		private bool isCursorOn = true;
+		private bool isCursorOn = false;
 		private bool isCursorBlinking = false;
 
 		private bool is8BitMode = true;
