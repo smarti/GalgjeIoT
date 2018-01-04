@@ -77,8 +77,10 @@ namespace HangManClient
 
             if (lastKey != null)
             {
-                lcd.SetCursorPosition(0, 8);
+                lcd.SetCursorPosition(0, 7);
                 lcd.WriteLine(text);
+
+                lcd.WriteLine("submit: <enter>");
             }
         }
     }
