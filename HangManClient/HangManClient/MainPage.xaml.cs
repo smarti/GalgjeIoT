@@ -1,30 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
+﻿using System.Threading.Tasks;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace HangManClient
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
+        private readonly HD44780Controller lcd;
+
+        private string lastKey;
+
+        private SocketListener socketListener;
+        private readonly SocketClient socketClient;
+
         public MainPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
+
+            //Start lcd display
+            lcd = new HD44780Controller();
+            lcd.Init(20, 5, 16, 17, 4, 27, 22, 26, 19, 13, 6);
+            Task.Delay(5); //Short delay necessary for Init
+
+            //Start Listening for keyboardInput
+            Window.Current.CoreWindow.CharacterReceived += CoreWindowOnCharacterReceived;
+
+            //Start internet connection
+            socketListener = new SocketListener(9000);
+            socketClient = new SocketClient("10.0.0.24", 9000);
         }
+
+        #region Private Methods
+
+        private void CoreWindowOnCharacterReceived(CoreWindow sender, CharacterReceivedEventArgs args)
+        {
+            args.Handled = true;
+
+            if (args.KeyCode == 13) //[ENTER]
+            {
+                if (lastKey != null)
+                    socketClient.SendMessage(lastKey);
+
+                lastKey = null;
+            }
+
+            else if (args.KeyCode == 8) //[BACKSPACE]
+                lastKey = null;
+
+            else if (char.IsLetter((char) args.KeyCode))
+                lastKey = ((char) args.KeyCode).ToString();
+
+            SetLcdText(lastKey);
+        }
+
+        private async void SetLcdText(string text)
+        {
+            lcd.ClearDisplay();
+            await Task.Delay(5); //Short delay necessary for ClearDisplay
+
+            if (lastKey != null)
+            {
+                lcd.SetCursorPosition(0, 7);
+                lcd.WriteLine(text);
+
+                lcd.WriteLine("submit: <enter>");
+            }
+        }
+
+        #endregion
     }
 }
