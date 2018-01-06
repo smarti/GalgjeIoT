@@ -102,13 +102,11 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UDPSockets\UDPClientSocket.cs" />
-    <Compile Include="UDPSockets\UDPServerSocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="ClassDiagram1.cd" />
     <None Include="HangManClient_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
