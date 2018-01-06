@@ -54,7 +54,7 @@ namespace HangManServer
             
         }
 
-        public void btnStart_Clicked(object sender, RoutedEventArgs e)
+        public void BtnStart_Clicked(object sender, RoutedEventArgs e)
         {
             
             Answer = AnswerTextBox.Text;
@@ -62,7 +62,7 @@ namespace HangManServer
             Frame.Navigate(typeof(Game));
         }
 
-        public void btnUp_Clicked(object sender, RoutedEventArgs e)
+        public void BtnUp_Clicked(object sender, RoutedEventArgs e)
         {
             if (Level < 12)
             {
@@ -72,7 +72,7 @@ namespace HangManServer
             
 
         }
-        public void btnDown_Clicked(object sender, RoutedEventArgs e)
+        public void BtnDown_Clicked(object sender, RoutedEventArgs e)
         {
             if (Level > 0)
             {
