@@ -18,21 +18,15 @@ using Windows.Devices.PointOfService;
 using Windows.Security.Cryptography.Core;
 using Windows.UI.Xaml.Shapes;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace HangManServer
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class Game : Page
     {
-        public string HangmanAnswer;
-        public int HangmanLevelSetup;
-        public int HangmanLevelPlay = 0;
-        public int HangmanAttempt = 0;
-        public bool Play = false;
-        public List<Rectangle> HangmanDisplayList = new List<Rectangle>();
+        public string SecretWord;
+        public int Level;
+        public int HangmanLevelPlay;
+        public int HangmanAttempt;
+        public List<Rectangle> HangmanDisplayList;
         public List<string> HangmanAnswerList = new List<string>();
         public List<string> HangmanGoodList = new List<string>();
         public List<string> HangmanFalseList = new List<string>();
@@ -40,90 +34,83 @@ namespace HangManServer
         public Game()
         {
             this.InitializeComponent();
-            HangmanDisplayList.Add(HangmanDisplay1);
-            HangmanDisplayList.Add(HangmanDisplay2);
-            HangmanDisplayList.Add(HangmanDisplay3);
-            HangmanDisplayList.Add(HangmanDisplay4);
-            HangmanDisplayList.Add(HangmanDisplay5);
-            HangmanDisplayList.Add(HangmanDisplay6);
-            HangmanDisplayList.Add(HangmanDisplay7);
-            HangmanDisplayList.Add(HangmanDisplay8);
-            HangmanDisplayList.Add(HangmanDisplay9);
-            HangmanDisplayList.Add(HangmanDisplay10);
-            HangmanDisplayList.Add(HangmanDisplay11);
-            HangmanDisplayList.Add(HangmanDisplay12);
 
-            Setup();
+            SocketServer server = new SocketServer(9000);
+            server.MessageReceived += CheckInput;
+
+            InitHangmanDisplay();
+
+            SecretWord = MainPage.SecretWord;
+            Level = 12 - MainPage.Level;
+
+            InitSecretWord();
         }
 
-
-        public void Setup()
+        private void InitHangmanDisplay()
         {
+            HangmanDisplayList = new List<Rectangle>
+            {
+                HangmanDisplay1,
+                HangmanDisplay2,
+                HangmanDisplay3,
+                HangmanDisplay4,
+                HangmanDisplay5,
+                HangmanDisplay6,
+                HangmanDisplay7,
+                HangmanDisplay8,
+                HangmanDisplay9,
+                HangmanDisplay10,
+                HangmanDisplay11,
+                HangmanDisplay12
+            };
 
-            HangmanAnswer = MainPage.Answer;
-            HangmanLevelSetup = 12 - MainPage.Level;
-            char[] HangmanArray = HangmanAnswer.ToCharArray();
-            foreach (char ch in HangmanArray)
-            {
-                string Variable = ch.ToString();
-                HangmanAnswerList.Add(Variable);
-            }
-            while (HangmanLevelPlay < HangmanLevelSetup)
-            {
-                HangmanDisplayList[HangmanLevelPlay].Visibility = Visibility.Visible;
-                ++HangmanLevelPlay;
-            }
-            SetupWordField();
-            Play = true;
+            for (int i = 0; i < Level; i++)
+                HangmanDisplayList[i].Visibility = Visibility.Visible;
         }
 
-        public void SetupWordField()
+        private void InitSecretWord()
         {
-            int i = 0;
-            while (i < HangmanAnswerList.Count)
+            foreach (char character in SecretWord)
             {
+                HangmanAnswerList.Add(character.ToString());
+            }
+
+            for (int i = 0; i < HangmanAnswerList.Count; i++)
                 HangmanGoodList.Add("_");
-                ++i;
-            }
 
             AnswerGood.Text = String.Join(" ", HangmanGoodList.ToArray());
         }
 
-        public void ChangeWordField()
+        private void ChangeWordField()
         {
             AnswerGood.Text = String.Join(" ", HangmanGoodList.ToArray());
             AnswerFalse.Text= String.Join(" ", HangmanFalseList.ToArray());
         }
 
-        public void ChangeHangman()
+        private void ChangeHangman()
         {
             
             HangmanDisplayList[HangmanLevelPlay].Visibility = Visibility.Visible;
             ++HangmanLevelPlay;
         }
 
-        public void CheckLevel()
+        private void CheckLevel()
         {
             if (HangmanLevelPlay == 12)
             {
-                Result.Text = "GAME OVER THE WORD WAS "+HangmanAnswer;
+                Result.Text = "GAME OVER THE WORD WAS "+SecretWord;
 
             }
 
             if (HangmanAnswerList.Count == HangmanAttempt)
             {
-                Result.Text = "YOU WON THE WORD WAS "+ HangmanAnswer;
+                Result.Text = "YOU WON THE WORD WAS "+ SecretWord;
 
             }
-
-            Play = true;
         }
 
-      
-
-        public void CheckInput(string Letter)
+        private void CheckInput(string Letter)
         {
-            Play = false;
             bool checking = true;
             while (checking == true)
             {
@@ -135,9 +122,7 @@ namespace HangManServer
                         HangmanAnswerList[i] = "0";
                         ++HangmanAttempt;
                     }
-                        
                 }
-
 
                 if (!HangmanAnswerList.Contains(Letter))
                 {
@@ -148,7 +133,6 @@ namespace HangManServer
                     }
 
                     checking = false;
-                    
                 }
             }
   

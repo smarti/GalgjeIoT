@@ -6,13 +6,15 @@ namespace HangManServer
 {
     public class SocketServer
     {
-        private readonly int _portNumber = 9000;
+        private readonly int _portNumber;
 
         private readonly List<SocketClient> _clients;
         public MessageReceivedDelegate MessageReceived;
 
-        public SocketServer()
+        public SocketServer(int portNumber)
         {
+            _portNumber = portNumber;
+
             _clients = new List<SocketClient>();
 
             SocketListener listener = new SocketListener(_portNumber); //TODO: check if this works
