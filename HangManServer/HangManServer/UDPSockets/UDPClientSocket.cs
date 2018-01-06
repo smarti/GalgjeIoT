@@ -8,8 +8,8 @@ namespace UDPSockets
 {
     public class UDPClientSocket
     {
-        public HostName RemoteHostName { get; }
         private readonly string _remotePortNumber;
+        public HostName RemoteHostName { get; }
 
         public UDPClientSocket(HostName remoteHostName, int remotePortNumber)
         {

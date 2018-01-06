@@ -6,15 +6,13 @@ using UDPSockets;
 
 namespace HangManServer
 {
-    class Server
+    internal class Server
     {
         private readonly int _listeningPortNumber;
 
-        private UDPServerSocket _serverSocket;
+        private readonly UDPServerSocket _serverSocket;
 
         private readonly List<UDPClientSocket> _clients;
-
-        public delegate void MessageReceivedDelegate(string message);
         public MessageReceivedDelegate MessageReceived;
 
         public Server(int listeningPortNumber)
@@ -25,6 +23,15 @@ namespace HangManServer
 
             _serverSocket = new UDPServerSocket(_listeningPortNumber);
             _serverSocket.MessageReceived += ServerSocket_MessageReceived;
+        }
+
+        public delegate void MessageReceivedDelegate(string message);
+
+        #region Private Methods
+
+        private bool IsExistingClient(HostName hostname)
+        {
+            return _clients.All(client => client.RemoteHostName == hostname);
         }
 
         private void ServerSocket_MessageReceived(HostName hostname, string message)
@@ -38,9 +45,6 @@ namespace HangManServer
             MessageReceived(message);
         }
 
-        private bool IsExistingClient(HostName hostname)
-        {
-            return _clients.All(client => client.RemoteHostName == hostname);
-        }
+        #endregion
     }
 }

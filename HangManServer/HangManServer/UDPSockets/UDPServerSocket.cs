@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml;
 
 namespace UDPSockets
 {
-    class UDPServerSocket
+    internal class UDPServerSocket
     {
-        private string _listeningPortNumber;
-
-        public delegate void MessageReceivedDelegate(HostName hostName, string message);
+        private readonly string _listeningPortNumber;
         public MessageReceivedDelegate MessageReceived;
 
         public UDPServerSocket(int listeningPortNumber)
@@ -23,6 +16,23 @@ namespace UDPSockets
             _listeningPortNumber = listeningPortNumber.ToString();
 
             StartServer();
+        }
+
+        public delegate void MessageReceivedDelegate(HostName hostName, string message);
+
+        #region Private Methods
+
+        private void DataGramSocket_MessageReceived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)
+        {
+            string message;
+            using (DataReader dataReader = args.GetDataReader())
+            {
+                message = dataReader.ReadString(dataReader.UnconsumedBufferLength).Trim();
+            }
+
+            MessageReceived(args.RemoteAddress, message);
+
+            Debug.WriteLine($"Server received the message: \"{message}\"");
         }
 
         private async void StartServer()
@@ -46,17 +56,6 @@ namespace UDPSockets
             }
         }
 
-        private void DataGramSocket_MessageReceived(DatagramSocket sender, DatagramSocketMessageReceivedEventArgs args)
-        {
-            string message;
-            using (DataReader dataReader = args.GetDataReader())
-            {
-                message = dataReader.ReadString(dataReader.UnconsumedBufferLength).Trim();
-            }
-
-            MessageReceived(args.RemoteAddress, message);
-
-            Debug.WriteLine($"Server received the message: \"{message}\"");
-        }
+        #endregion
     }
 }

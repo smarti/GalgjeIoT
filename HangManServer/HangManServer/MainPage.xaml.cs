@@ -7,13 +7,37 @@ namespace HangManServer
     {
         public static string SecretWord;
         public static int Level;
-        
-        
+
         public MainPage()
         {
             InitializeComponent();
 
             Level = 12;
+
+            SetLevel();
+        }
+
+        #region Private Methods
+
+        private void ButtonDown_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (Level > 0)
+                Level--;
+
+            SetLevel();
+        }
+
+        private void ButtonStart_Clicked(object sender, RoutedEventArgs e)
+        {
+            SecretWord = AnswerTextBox.Text;
+
+            Frame.Navigate(typeof(Game));
+        }
+
+        private void ButtonUp_Clicked(object sender, RoutedEventArgs e)
+        {
+            if (Level < 12)
+                Level++;
 
             SetLevel();
         }
@@ -24,28 +48,6 @@ namespace HangManServer
             HangmanLevel.Text = levelDisplay;
         }
 
-        private void BtnStart_Clicked(object sender, RoutedEventArgs e)
-        {
-            SecretWord = AnswerTextBox.Text;
-            
-            Frame.Navigate(typeof(Game));
-        }
-
-        private void BtnUp_Clicked(object sender, RoutedEventArgs e)
-        {
-            if (Level < 12)
-                Level++;
-
-            SetLevel();
-        }
-
-        private void BtnDown_Clicked(object sender, RoutedEventArgs e)
-        {
-            if (Level > 0)
-                Level--;
-            
-            SetLevel();
-        }
+        #endregion
     }
 }
-

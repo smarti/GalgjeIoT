@@ -1,38 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.Devices.Gpio;
 using System.Diagnostics;
-using Windows.Devices.PointOfService;
-using Windows.Security.Cryptography.Core;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Shapes;
 
 namespace HangManServer
 {
-    public sealed partial class Game : Page
+    public sealed partial class Game
     {
-        public string SecretWord;
-        public int Level;
-        public int HangmanLevelPlay;
-        public int HangmanAttempt;
-        public List<Rectangle> HangmanDisplayList;
-        public List<string> HangmanAnswerList = new List<string>();
-        public List<string> HangmanGoodList = new List<string>();
-        public List<string> HangmanFalseList = new List<string>();
+        private readonly string _secretWord;
+        private readonly int _level;
 
-        private Server _server;
+        private int _hangmanLevelPlay;
+        private int _hangmanAttempt;
+
+        private List<Rectangle> _hangmanDisplayList;
+
+        private readonly List<string> _hangmanAnswerList = new List<string>();
+        private readonly List<string> _hangmanGoodList = new List<string>();
+        private readonly List<string> _hangmanFalseList = new List<string>();
+
+        private readonly Server _server;
 
         public Game()
         {
@@ -43,105 +32,46 @@ namespace HangManServer
 
             InitHangmanDisplay();
 
-            SecretWord = MainPage.SecretWord;
-            Level = 12 - MainPage.Level;
+            _secretWord = MainPage.SecretWord;
+            _level = 12 - MainPage.Level;
 
             InitSecretWord();
         }
 
-        private void InitHangmanDisplay()
+        #region Private Methods
+
+        private void ChangeHangman()
         {
-            HangmanDisplayList = new List<Rectangle>
-            {
-                HangmanDisplay1,
-                HangmanDisplay2,
-                HangmanDisplay3,
-                HangmanDisplay4,
-                HangmanDisplay5,
-                HangmanDisplay6,
-                HangmanDisplay7,
-                HangmanDisplay8,
-                HangmanDisplay9,
-                HangmanDisplay10,
-                HangmanDisplay11,
-                HangmanDisplay12
-            };
-
-            for (int i = 0; i < Level; i++)
-                HangmanDisplayList[i].Visibility = Visibility.Visible;
-        }
-
-        private void InitSecretWord()
-        {
-            foreach (char character in SecretWord)
-            {
-                HangmanAnswerList.Add(character.ToString());
-            }
-
-            for (int i = 0; i < HangmanAnswerList.Count; i++)
-                HangmanGoodList.Add("_");
-
-            AnswerGood.Text = String.Join(" ", HangmanGoodList.ToArray());
+            _hangmanDisplayList[_hangmanLevelPlay].Visibility = Visibility.Visible;
+            ++_hangmanLevelPlay;
         }
 
         private void ChangeWordField()
         {
-            AnswerGood.Text = String.Join(" ", HangmanGoodList.ToArray());
-            AnswerFalse.Text = String.Join(" ", HangmanFalseList.ToArray());
+            AnswerGood.Text = string.Join(" ", _hangmanGoodList.ToArray());
+            AnswerFalse.Text = string.Join(" ", _hangmanFalseList.ToArray());
         }
 
-        private void ChangeHangman()
-        {
-
-            HangmanDisplayList[HangmanLevelPlay].Visibility = Visibility.Visible;
-            ++HangmanLevelPlay;
-        }
-
-        private void CheckLevel()
-        {
-            if (HangmanLevelPlay == 12)
-            {
-                Result.Text = "GAME OVER THE WORD WAS " + SecretWord;
-
-            }
-
-            if (HangmanAnswerList.Count == HangmanAttempt)
-            {
-                Result.Text = "YOU WON THE WORD WAS " + SecretWord;
-
-            }
-        }
-
-        private async void RequestCheckInput(string letter)
-        {
-            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            {
-                CheckInput(letter);
-            });
-        }
-
-        private void CheckInput(string Letter)
+        private void CheckInput(string letter)
         {
             Debug.WriteLine("CheckInput");
 
             bool checking = true;
             while (checking)
             {
-                for (int i = 0; i < HangmanAnswerList.Count; i++)
-                {
-                    if (HangmanAnswerList[i].Contains(Letter))
+                for (int i = 0; i < _hangmanAnswerList.Count; i++)
+                    if (_hangmanAnswerList[i].Contains(letter))
                     {
-                        HangmanGoodList[i] = HangmanAnswerList[i];
-                        HangmanAnswerList[i] = "0";
-                        ++HangmanAttempt;
+                        _hangmanGoodList[i] = _hangmanAnswerList[i];
+                        _hangmanAnswerList[i] = "0";
+                        ++_hangmanAttempt;
                     }
-                }
 
-                if (!HangmanAnswerList.Contains(Letter))
+                if (!_hangmanAnswerList.Contains(letter))
                 {
-                    if (!HangmanFalseList.Contains(Letter) && !HangmanGoodList.Contains(Letter))
+                    if (!_hangmanFalseList.Contains(letter) && !_hangmanGoodList.Contains(letter))
                     {
-                        HangmanFalseList.Add(Letter);
+                        _hangmanFalseList.Add(letter);
                         ChangeHangman();
                     }
 
@@ -157,9 +87,53 @@ namespace HangManServer
             Debug.WriteLine("CheckInput3");
         }
 
-        private void BtnAgain_onclick(object sender, RoutedEventArgs e)
+        private void CheckLevel()
         {
-            //this.Frame.Navigate(typeof(MainPage), null);
+            if (_hangmanLevelPlay == 12)
+                Result.Text = "GAME OVER THE WORD WAS " + _secretWord;
+
+            if (_hangmanAnswerList.Count == _hangmanAttempt)
+                Result.Text = "YOU WON THE WORD WAS " + _secretWord;
         }
+
+        private void InitHangmanDisplay()
+        {
+            _hangmanDisplayList = new List<Rectangle>
+            {
+                HangmanDisplay1,
+                HangmanDisplay2,
+                HangmanDisplay3,
+                HangmanDisplay4,
+                HangmanDisplay5,
+                HangmanDisplay6,
+                HangmanDisplay7,
+                HangmanDisplay8,
+                HangmanDisplay9,
+                HangmanDisplay10,
+                HangmanDisplay11,
+                HangmanDisplay12
+            };
+
+            for (int i = 0; i < _level; i++)
+                _hangmanDisplayList[i].Visibility = Visibility.Visible;
+        }
+
+        private void InitSecretWord()
+        {
+            foreach (char character in _secretWord)
+                _hangmanAnswerList.Add(character.ToString());
+
+            for (int i = 0; i < _hangmanAnswerList.Count; i++)
+                _hangmanGoodList.Add("_");
+
+            AnswerGood.Text = string.Join(" ", _hangmanGoodList.ToArray());
+        }
+
+        private async void RequestCheckInput(string letter)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { CheckInput(letter); });
+        }
+
+        #endregion
     }
 }

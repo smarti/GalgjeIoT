@@ -9,9 +9,9 @@
 
     <Grid Background="LightSeaGreen" Margin="-36,-18,-40,-24">
         <TextBox x:Name="AnswerTextBox" HorizontalAlignment="Left" Margin="199,362,0,0"  VerticalAlignment="Top" Height="30" Width="384" PlaceholderText="Geef hier het te raden woord in"/>
-        <Button x:Name="BtnStart" Content="Start Game" HorizontalAlignment="Left" Margin="292,462,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.554,0.625" Click="BtnStart_Clicked"/>
-        <Button x:Name="BtnUp" Content="Omhoog" HorizontalAlignment="Left" Margin="833,477,0,0" VerticalAlignment="Top" Click="BtnUp_Clicked"/>
-        <Button x:Name="BtnDown" Content="Omlaag" HorizontalAlignment="Left" Margin="956,477,0,0" VerticalAlignment="Top" Click="BtnDown_Clicked"/>
+        <Button x:Name="BtnStart" Content="Start Game" HorizontalAlignment="Left" Margin="292,462,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.554,0.625" Click="ButtonStart_Clicked"/>
+        <Button x:Name="BtnUp" Content="Omhoog" HorizontalAlignment="Left" Margin="833,477,0,0" VerticalAlignment="Top" Click="ButtonUp_Clicked"/>
+        <Button x:Name="BtnDown" Content="Omlaag" HorizontalAlignment="Left" Margin="956,477,0,0" VerticalAlignment="Top" Click="ButtonDown_Clicked"/>
         <TextBox x:Name="HangmanLevel" HorizontalAlignment="Left" Margin="920,373,0,0"  VerticalAlignment="Top" Width="106" IsReadOnly="True" Background="{x:Null}" BorderBrush="{x:Null}" Height="83" FontSize="36"/>
         <TextBlock HorizontalAlignment="Left" Margin="598,32,0,0" Text="Galgje" TextWrapping="Wrap" VerticalAlignment="Top" Height="74" Width="174" FontSize="48" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Left" Margin="752,336,0,0" Text="Bepaal hier het aantal fouten wat de speler nog kan maken" TextWrapping="Wrap" VerticalAlignment="Top" Width="429" Height="54" FontSize="16" FontWeight="Bold"/>

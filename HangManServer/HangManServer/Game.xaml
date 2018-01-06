@@ -66,6 +66,5 @@
         <TextBlock x:Name="AnswerFalse_Copy" Text="Foutieve letters"  HorizontalAlignment="Left" Margin="20,511,561,0" VerticalAlignment="Top" Height="62" Width="699" FontSize="36" />
        
         <TextBlock x:Name="Result" HorizontalAlignment="Left" Margin="56,71,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Height="203" Width="451" FontSize="36" FontWeight="Bold"/>
-        <Button Content="Play Again" HorizontalAlignment="Left" Margin="230,249,0,0" VerticalAlignment="Top" Click="BtnAgain_onclick"/>
     </Grid>
 </Page>
