@@ -8,15 +8,15 @@ namespace HangManClient
 {
     public class SocketClient
     {
-        private readonly HostName _serverHostName;
-        private readonly string _serverPortNumber;
+        private readonly HostName _remoteHostName;
+        private readonly string _remotePortNumber;
 
         private StreamSocket _socket;
 
         public SocketClient(string serverHostName, int serverPort)
         {
-            _serverHostName = new HostName(serverHostName);
-            _serverPortNumber = serverPort.ToString();
+            _remoteHostName = new HostName(serverHostName);
+            _remotePortNumber = serverPort.ToString();
 
             ConnectClient();
         }
@@ -31,7 +31,7 @@ namespace HangManClient
 
                 Debug.WriteLine("Client is trying to connect...");
 
-                await _socket.ConnectAsync(_serverHostName, _serverPortNumber);
+                await _socket.ConnectAsync(_remoteHostName, _remotePortNumber);
 
                 Debug.WriteLine("Client connected!");
 
@@ -42,6 +42,10 @@ namespace HangManClient
             {
                 SocketErrorStatus webErrorStatus = SocketError.GetStatus(ex.GetBaseException().HResult);
                 Debug.WriteLine(webErrorStatus.ToString() != "Unknown" ? webErrorStatus.ToString() : ex.Message);
+
+                //Reconnect if connection timed out
+                if (webErrorStatus == SocketErrorStatus.ConnectionTimedOut)
+                    ConnectClient();
             }
         }
 
@@ -64,7 +68,12 @@ namespace HangManClient
                 SocketErrorStatus webErrorStatus = SocketError.GetStatus(ex.GetBaseException().HResult);
                 Debug.WriteLine(webErrorStatus.ToString() != "Unknown" ? webErrorStatus.ToString() : ex.Message);
 
-                //TODO: retry Message
+                //reconnect if connection timed out
+                if (webErrorStatus == SocketErrorStatus.ConnectionTimedOut)
+                    ConnectClient();
+
+                //Retry
+                SendMessage(message);
             }
         }
     }

@@ -9,6 +9,9 @@ namespace HangManClient
     {
         private readonly string _portNumber;
 
+        public delegate void MessageReceivedDelegate(string message);
+        public MessageReceivedDelegate MessageReceived;
+
         public SocketListener(int portNumber)
         {
             _portNumber = portNumber.ToString();
@@ -55,7 +58,7 @@ namespace HangManClient
                     {
                         string message = dataReader.ReadString(actualStringLength);
 
-                        //TODO: start method to handle message
+                        MessageReceived(message);
                     }
                 }
             }
