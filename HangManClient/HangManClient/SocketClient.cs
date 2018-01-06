@@ -8,14 +8,15 @@ namespace HangManClient
 {
     public class SocketClient
     {
-        private readonly HostName _remoteHostName;
         private readonly string _remotePortNumber;
 
         private StreamSocket _socket;
 
-        public SocketClient(string serverHostName, int serverPort)
+        public HostName GetRemoteHostName { get; }
+
+        public SocketClient(HostName serverHostName, int serverPort)
         {
-            _remoteHostName = new HostName(serverHostName);
+            GetRemoteHostName = serverHostName;
             _remotePortNumber = serverPort.ToString();
 
             ConnectClient();
@@ -31,7 +32,7 @@ namespace HangManClient
 
                 Debug.WriteLine("Client is trying to connect...");
 
-                await _socket.ConnectAsync(_remoteHostName, _remotePortNumber);
+                await _socket.ConnectAsync(GetRemoteHostName, _remotePortNumber);
 
                 Debug.WriteLine("Client connected!");
 

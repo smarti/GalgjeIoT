@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Windows.Networking;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,7 +29,7 @@ namespace HangManClient
 
             //Start internet connection
             socketListener = new SocketListener(9000);
-            socketClient = new SocketClient("10.0.0.24", 9000);
+            socketClient = new SocketClient(new HostName("10.0.0.10"), 9000);
         }
 
         #region Private Methods

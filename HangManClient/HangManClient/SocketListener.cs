@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Windows.Networking;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
@@ -8,8 +9,6 @@ namespace HangManClient
     public class SocketListener
     {
         private readonly string _portNumber;
-
-        public delegate void MessageReceivedDelegate(string message);
         public MessageReceivedDelegate MessageReceived;
 
         public SocketListener(int portNumber)
@@ -18,6 +17,8 @@ namespace HangManClient
 
             StartListener();
         }
+
+        public delegate void MessageReceivedDelegate(HostName hostName, string message);
 
         #region Private Methods
 
@@ -57,8 +58,9 @@ namespace HangManClient
                     if (stringLength == actualStringLength)
                     {
                         string message = dataReader.ReadString(actualStringLength);
+                        HostName hostName = args.Socket.Information.RemoteHostName;
 
-                        MessageReceived(message);
+                        MessageReceived(hostName, message);
                     }
                 }
             }
