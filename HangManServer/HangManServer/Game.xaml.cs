@@ -31,12 +31,14 @@ namespace HangManServer
         public List<string> HangmanGoodList = new List<string>();
         public List<string> HangmanFalseList = new List<string>();
 
+        private SocketServer _server;
+
         public Game()
         {
             this.InitializeComponent();
 
-            SocketServer server = new SocketServer(9000);
-            server.MessageReceived += CheckInput;
+            _server = new SocketServer(9000);
+            _server.MessageReceived += CheckInput;
 
             InitHangmanDisplay();
 
@@ -84,12 +86,12 @@ namespace HangManServer
         private void ChangeWordField()
         {
             AnswerGood.Text = String.Join(" ", HangmanGoodList.ToArray());
-            AnswerFalse.Text= String.Join(" ", HangmanFalseList.ToArray());
+            AnswerFalse.Text = String.Join(" ", HangmanFalseList.ToArray());
         }
 
         private void ChangeHangman()
         {
-            
+
             HangmanDisplayList[HangmanLevelPlay].Visibility = Visibility.Visible;
             ++HangmanLevelPlay;
         }
@@ -98,51 +100,57 @@ namespace HangManServer
         {
             if (HangmanLevelPlay == 12)
             {
-                Result.Text = "GAME OVER THE WORD WAS "+SecretWord;
+                Result.Text = "GAME OVER THE WORD WAS " + SecretWord;
 
             }
 
             if (HangmanAnswerList.Count == HangmanAttempt)
             {
-                Result.Text = "YOU WON THE WORD WAS "+ SecretWord;
+                Result.Text = "YOU WON THE WORD WAS " + SecretWord;
 
             }
         }
 
         private void CheckInput(string Letter)
         {
-            bool checking = true;
-            while (checking == true)
-            {
-                for (int i = 0; i < HangmanAnswerList.Count; i++)
-                {
-                    if (HangmanAnswerList[i].Contains(Letter))
-                    {
-                        HangmanGoodList[i] = HangmanAnswerList[i];
-                        HangmanAnswerList[i] = "0";
-                        ++HangmanAttempt;
-                    }
-                }
+            Debug.WriteLine("CheckInput");
 
-                if (!HangmanAnswerList.Contains(Letter))
-                {
-                    if (!HangmanFalseList.Contains(Letter) && !HangmanGoodList.Contains(Letter))
-                    {
-                        HangmanFalseList.Add(Letter);
-                        ChangeHangman();
-                    }
+            //bool checking = true;
+            //while (checking)
+            //{
+            //    for (int i = 0; i < HangmanAnswerList.Count; i++)
+            //    {
+            //        if (HangmanAnswerList[i].Contains(Letter))
+            //        {
+            //            HangmanGoodList[i] = HangmanAnswerList[i];
+            //            HangmanAnswerList[i] = "0";
+            //            ++HangmanAttempt;
+            //        }
+            //    }
 
-                    checking = false;
-                }
-            }
-  
-        ChangeWordField(); 
-        CheckLevel();    
+            //    if (!HangmanAnswerList.Contains(Letter))
+            //    {
+            //        if (!HangmanFalseList.Contains(Letter) && !HangmanGoodList.Contains(Letter))
+            //        {
+            //            HangmanFalseList.Add(Letter);
+            //            ChangeHangman();
+            //        }
+
+            //        checking = false;
+            //    }
+            //}
+
+            Debug.WriteLine("CheckInput2");
+
+            //ChangeWordField();
+            //CheckLevel();
+
+            Debug.WriteLine("CheckInput3");
         }
 
         private void BtnAgain_onclick(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof (MainPage), null);
+            //this.Frame.Navigate(typeof(MainPage), null);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace HangManClient
 
             //Start internet connection
             socketListener = new SocketListener(9000);
-            socketClient = new SocketClient(new HostName("10.0.0.10"), 9000);
+            socketClient = new SocketClient(new HostName("10.0.0.26"), 9000);
         }
 
         #region Private Methods

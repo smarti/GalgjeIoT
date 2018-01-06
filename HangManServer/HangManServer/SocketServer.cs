@@ -7,6 +7,7 @@ namespace HangManServer
     public class SocketServer
     {
         private readonly int _portNumber;
+        private readonly SocketListener _listener;
 
         private readonly List<SocketClient> _clients;
         public MessageReceivedDelegate MessageReceived;
@@ -17,8 +18,8 @@ namespace HangManServer
 
             _clients = new List<SocketClient>();
 
-            SocketListener listener = new SocketListener(_portNumber); //TODO: check if this works
-            listener.MessageReceived += Listener_MessageReceived;
+            _listener = new SocketListener(_portNumber); //TODO: check if this works
+            _listener.MessageReceived += Listener_MessageReceived;
         }
 
         public delegate void MessageReceivedDelegate(string message);
@@ -36,6 +37,7 @@ namespace HangManServer
 
         private void Listener_MessageReceived(HostName hostName, string message)
         {
+            Debug.WriteLine("SocketServer messageReceived");
             if (!IsExistingClient(hostName))
             {
                 _clients.Add(new SocketClient(hostName, _portNumber));

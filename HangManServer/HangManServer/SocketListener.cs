@@ -60,6 +60,7 @@ namespace HangManServer
                         string message = dataReader.ReadString(actualStringLength);
                         HostName hostName = args.Socket.Information.RemoteHostName;
 
+                        Debug.WriteLine($"Message received: {message}");
                         MessageReceived(hostName, message);
                     }
                 }
