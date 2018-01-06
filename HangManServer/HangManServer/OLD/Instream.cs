@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 
-namespace HangManServer
 {
     class Instream
     {

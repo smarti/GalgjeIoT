@@ -8,7 +8,6 @@ using Windows.Networking.Sockets;
 using Windows.Storage.Streams;
 using System.Diagnostics;
 
-namespace HangManServer
 {
     public class Outstream
     {
