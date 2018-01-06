@@ -14,6 +14,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Devices.Gpio;
 using System.Diagnostics;
+using Windows.Media.Playback;
+
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
 namespace HangManServer
@@ -26,7 +28,8 @@ namespace HangManServer
         private Instream server;
         public static string Answer;
         public static int Level;
-
+        
+        
         public MainPage()
         {
             this.InitializeComponent();
@@ -37,10 +40,18 @@ namespace HangManServer
             //Koppel OnDataOntvangen aan de methode die uitgevoerd worden:
             server.OnDataOntvangen += server.Server_OnDataOntvangen;
 
-            Level = 13;
+            Level = 12;
             string levelDisplay=Convert.ToString(Level);
             HangmanLevel.Text = levelDisplay;
+           
+            
+        }
 
+        public void SetLevel()
+        {
+            string levelDisplay = Convert.ToString(Level);
+            HangmanLevel.Text = levelDisplay;
+            
         }
 
         public void btnStart_Clicked(object sender, RoutedEventArgs e)
@@ -53,13 +64,12 @@ namespace HangManServer
 
         public void btnUp_Clicked(object sender, RoutedEventArgs e)
         {
-            if (Level < 13)
+            if (Level < 12)
             {
                 Level += 1;
             }
-           
-            string levelDisplay = Convert.ToString(Level);
-            HangmanLevel.Text = levelDisplay;
+           SetLevel();
+            
 
         }
         public void btnDown_Clicked(object sender, RoutedEventArgs e)
@@ -69,8 +79,7 @@ namespace HangManServer
                 Level -= 1;
             }
             
-            string levelDisplay = Convert.ToString(Level);
-            HangmanLevel.Text = levelDisplay;
+            SetLevel();
 
         }
 

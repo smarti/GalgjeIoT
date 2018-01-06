@@ -7,8 +7,65 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="LightSeaGreen">
-        <TextBox x:Name="AnswerBox" HorizontalAlignment="Left" Margin="335,275,0,0"  VerticalAlignment="Top"/>
-           
+    <Grid Background="LightSeaGreen" Visibility="Visible">
+        <Rectangle x:Name="HangmanDisplay1" HorizontalAlignment="Left" Height="9" Margin="1032,670,0,0" VerticalAlignment="Top" Width="169" Fill="Black" Visibility="Collapsed"/>
+        <Rectangle x:Name="HangmanDisplay2" HorizontalAlignment="Left" Height="9" Margin="919,466,-42,0" VerticalAlignment="Top" Width="403" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="90.248"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay3" HorizontalAlignment="Left" Height="9" Margin="1059,642,0,0" VerticalAlignment="Top" Width="73" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="130.887"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay4" HorizontalAlignment="Left" Height="9" Margin="907,269,0,0" VerticalAlignment="Top" Width="219" Fill="Black" Visibility="Collapsed"/>
+        <Rectangle x:Name="HangmanDisplay5" HorizontalAlignment="Left" Height="9" Margin="1050,308,0,0" VerticalAlignment="Top" Width="92" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="56.747"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay6" HorizontalAlignment="Left" Height="9" Margin="897,283,0,0" VerticalAlignment="Top" Width="31" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="91.204"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay7" HorizontalAlignment="Left" Height="67" Margin="875,302,0,0" VerticalAlignment="Top" Width="74" Stroke="Black" Visibility="Collapsed"/>
+        <Rectangle x:Name="HangmanDisplay8" HorizontalAlignment="Left" Height="5" Margin="823,454,0,0" VerticalAlignment="Top" Width="176" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="90.248"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay9" HorizontalAlignment="Left" Height="6" Margin="904,397,0,0" VerticalAlignment="Top" Width="98" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="-28.654"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay10" HorizontalAlignment="Left" Height="6" Margin="820,393,0,0" VerticalAlignment="Top" Width="98" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="32.066"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay11" HorizontalAlignment="Left" Height="6" Margin="891,575,0,0" VerticalAlignment="Top" Width="98" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="51.813"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <Rectangle x:Name="HangmanDisplay12" HorizontalAlignment="Left" Height="6" Margin="828,576,0,0" VerticalAlignment="Top" Width="98" Fill="Black" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <CompositeTransform Rotation="131.292"/>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+        <TextBlock x:Name="AnswerGood" HorizontalAlignment="Left" Margin="23,428,0,0" VerticalAlignment="Top" Height="62" Width="699" FontSize="36"
+                 >
+            
+                
+        </TextBlock>
+        <TextBlock x:Name="AnswerFalse" HorizontalAlignment="Left" Margin="20,572,0,0" VerticalAlignment="Top" Height="62" Width="699" FontSize="36" />
+        <TextBlock x:Name="AnswerGood_Copy" Text="Geraden letters" HorizontalAlignment="Left" Margin="23,367,0,0" VerticalAlignment="Top" Height="62" Width="699" FontSize="36" />
+        <TextBlock x:Name="AnswerFalse_Copy" Text="Foutieve letters"  HorizontalAlignment="Left" Margin="20,511,561,0" VerticalAlignment="Top" Height="62" Width="699" FontSize="36" />
+       
+        <TextBlock x:Name="Result" HorizontalAlignment="Left" Margin="56,71,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Height="203" Width="451" FontSize="36" FontWeight="Bold"/>
+        <Button Content="Play Again" HorizontalAlignment="Left" Margin="230,249,0,0" VerticalAlignment="Top" Click="BtnAgain_onclick"/>
     </Grid>
 </Page>

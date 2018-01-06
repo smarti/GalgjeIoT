@@ -56,7 +56,7 @@ namespace HangManServer
             IPAddress addr;
             if (IPAddress.TryParse(bericht, out addr))
             {
-                Debug.WriteLine("Bericht ontvangen van ip: " + bericht);
+               
                 //Als hij niet in de lijst voorkomt, is het een nieuw team
                 Task.Delay(150).Wait();
                 if (!teamIP.Contains(bericht))
@@ -77,7 +77,13 @@ namespace HangManServer
             {
                 Debug.WriteLine("Bericht ontvangen van een Team: " + bericht);
             }
+            Game game=new Game();
+            if (game.Play == true)
+            {
+                game.CheckInput(bericht);
+            }
             
+
         }
 
         /// <summary>
