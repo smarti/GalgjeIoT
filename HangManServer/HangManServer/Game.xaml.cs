@@ -16,6 +16,7 @@ using Windows.Devices.Gpio;
 using System.Diagnostics;
 using Windows.Devices.PointOfService;
 using Windows.Security.Cryptography.Core;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Shapes;
 
 namespace HangManServer
@@ -31,14 +32,14 @@ namespace HangManServer
         public List<string> HangmanGoodList = new List<string>();
         public List<string> HangmanFalseList = new List<string>();
 
-        private SocketServer _server;
+        private Server _server;
 
         public Game()
         {
-            this.InitializeComponent();
+            InitializeComponent();
 
-            _server = new SocketServer(9000);
-            _server.MessageReceived += CheckInput;
+            _server = new Server(9000);
+            _server.MessageReceived += RequestCheckInput;
 
             InitHangmanDisplay();
 
@@ -111,39 +112,47 @@ namespace HangManServer
             }
         }
 
+        private async void RequestCheckInput(string letter)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                CheckInput(letter);
+            });
+        }
+
         private void CheckInput(string Letter)
         {
             Debug.WriteLine("CheckInput");
 
-            //bool checking = true;
-            //while (checking)
-            //{
-            //    for (int i = 0; i < HangmanAnswerList.Count; i++)
-            //    {
-            //        if (HangmanAnswerList[i].Contains(Letter))
-            //        {
-            //            HangmanGoodList[i] = HangmanAnswerList[i];
-            //            HangmanAnswerList[i] = "0";
-            //            ++HangmanAttempt;
-            //        }
-            //    }
+            bool checking = true;
+            while (checking)
+            {
+                for (int i = 0; i < HangmanAnswerList.Count; i++)
+                {
+                    if (HangmanAnswerList[i].Contains(Letter))
+                    {
+                        HangmanGoodList[i] = HangmanAnswerList[i];
+                        HangmanAnswerList[i] = "0";
+                        ++HangmanAttempt;
+                    }
+                }
 
-            //    if (!HangmanAnswerList.Contains(Letter))
-            //    {
-            //        if (!HangmanFalseList.Contains(Letter) && !HangmanGoodList.Contains(Letter))
-            //        {
-            //            HangmanFalseList.Add(Letter);
-            //            ChangeHangman();
-            //        }
+                if (!HangmanAnswerList.Contains(Letter))
+                {
+                    if (!HangmanFalseList.Contains(Letter) && !HangmanGoodList.Contains(Letter))
+                    {
+                        HangmanFalseList.Add(Letter);
+                        ChangeHangman();
+                    }
 
-            //        checking = false;
-            //    }
-            //}
+                    checking = false;
+                }
+            }
 
             Debug.WriteLine("CheckInput2");
 
-            //ChangeWordField();
-            //CheckLevel();
+            ChangeWordField();
+            CheckLevel();
 
             Debug.WriteLine("CheckInput3");
         }

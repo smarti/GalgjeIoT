@@ -2,34 +2,32 @@
 using Windows.Networking;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using UDPSockets;
 
 namespace HangManClient
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage
     {
-        private readonly HD44780Controller lcd;
+        private readonly HD44780Controller _lcd;
 
-        private string lastKey;
+        private string _lastKey;
 
-        private SocketListener socketListener;
-        private readonly SocketClient socketClient;
+        private readonly UDPClientSocket _clientSocket;
 
         public MainPage()
         {
             InitializeComponent();
 
             //Start lcd display
-            lcd = new HD44780Controller();
-            lcd.Init(20, 5, 16, 17, 4, 27, 22, 26, 19, 13, 6);
+            _lcd = new HD44780Controller();
+            _lcd.Init(20, 5, 16, 17, 4, 27, 22, 26, 19, 13, 6);
             Task.Delay(5); //Short delay necessary for Init
 
             //Start Listening for keyboardInput
             Window.Current.CoreWindow.CharacterReceived += CoreWindowOnCharacterReceived;
 
             //Start internet connection
-            socketListener = new SocketListener(9000);
-            socketClient = new SocketClient(new HostName("10.0.0.26"), 9000);
+            _clientSocket = new UDPClientSocket(new HostName("10.0.0.26"), 9000);
         }
 
         #region Private Methods
@@ -40,32 +38,32 @@ namespace HangManClient
 
             if (args.KeyCode == 13) //[ENTER]
             {
-                if (lastKey != null)
-                    socketClient.SendMessage(lastKey);
+                if (_lastKey != null)
+                    _clientSocket.SendMessage(_lastKey);
 
-                lastKey = null;
+                _lastKey = null;
             }
 
             else if (args.KeyCode == 8) //[BACKSPACE]
-                lastKey = null;
+                _lastKey = null;
 
             else if (char.IsLetter((char) args.KeyCode))
-                lastKey = ((char) args.KeyCode).ToString();
+                _lastKey = ((char) args.KeyCode).ToString();
 
-            SetLcdText(lastKey);
+            SetLcdText(_lastKey);
         }
 
         private async void SetLcdText(string text)
         {
-            lcd.ClearDisplay();
+            _lcd.ClearDisplay();
             await Task.Delay(5); //Short delay necessary for ClearDisplay
 
-            if (lastKey != null)
+            if (_lastKey != null)
             {
-                lcd.SetCursorPosition(0, 7);
-                lcd.WriteLine(text);
+                _lcd.SetCursorPosition(0, 7);
+                _lcd.WriteLine(text);
 
-                lcd.WriteLine("submit: <enter>");
+                _lcd.WriteLine("submit: <enter>");
             }
         }
 
