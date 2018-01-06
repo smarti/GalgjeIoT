@@ -9,8 +9,6 @@ namespace HangManServer
     public class SocketListener
     {
         private readonly string _portNumber;
-
-        public delegate void MessageReceivedDelegate(HostName hostName, string message);
         public MessageReceivedDelegate MessageReceived;
 
         public SocketListener(int portNumber)
@@ -19,6 +17,8 @@ namespace HangManServer
 
             StartListener();
         }
+
+        public delegate void MessageReceivedDelegate(HostName hostName, string message);
 
         #region Private Methods
 
