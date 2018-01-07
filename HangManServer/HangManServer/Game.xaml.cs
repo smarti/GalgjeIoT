@@ -28,7 +28,7 @@ namespace HangManServer
             InitializeComponent();
 
             _server = new Server(9000);
-            _server.MessageReceived += RequestCheckInput;
+            _server.MessageReceived += CheckInputAsync;
 
             InitHangmanDisplay();
 
@@ -129,7 +129,7 @@ namespace HangManServer
             AnswerGood.Text = string.Join(" ", _hangmanGoodList.ToArray());
         }
 
-        private async void RequestCheckInput(string letter)
+        private async void CheckInputAsync(string letter)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { CheckInput(letter); });
         }
