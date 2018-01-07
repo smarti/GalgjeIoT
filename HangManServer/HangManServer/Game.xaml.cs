@@ -54,8 +54,6 @@ namespace HangManServer
 
         private void CheckInput(string letter)
         {
-            Debug.WriteLine("CheckInput");
-
             bool checking = true;
             while (checking)
             {
@@ -79,12 +77,8 @@ namespace HangManServer
                 }
             }
 
-            Debug.WriteLine("CheckInput2");
-
             ChangeWordField();
             CheckLevel();
-
-            Debug.WriteLine("CheckInput3");
         }
 
         private void CheckLevel()
