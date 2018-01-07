@@ -28,7 +28,7 @@ namespace HangManServer
             InitializeComponent();
 
             _server = new Server(9000);
-            _server.MessageReceived += RequestCheckInput;
+            _server.MessageReceived += CheckInputAsync;
 
             InitHangmanDisplay();
 
@@ -54,8 +54,6 @@ namespace HangManServer
 
         private void CheckInput(string letter)
         {
-            Debug.WriteLine("CheckInput");
-
             bool checking = true;
             while (checking)
             {
@@ -79,12 +77,8 @@ namespace HangManServer
                 }
             }
 
-            Debug.WriteLine("CheckInput2");
-
             ChangeWordField();
             CheckLevel();
-
-            Debug.WriteLine("CheckInput3");
         }
 
         private void CheckLevel()
@@ -129,7 +123,7 @@ namespace HangManServer
             AnswerGood.Text = string.Join(" ", _hangmanGoodList.ToArray());
         }
 
-        private async void RequestCheckInput(string letter)
+        private async void CheckInputAsync(string letter)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { CheckInput(letter); });
         }
